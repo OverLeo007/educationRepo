@@ -22,14 +22,26 @@ def rounder(n: int):
 
 
 # a, b, ang1 = map(int, input().split())
-a, b, ab = 3, 4, 90
+a, b, ab = 3.5, 3.5, '90'
+
+if isinstance(a, str) or isinstance(b, str) or isinstance(ab, str):
+    print('\x1b[31mОшибка: Введен не числовой тип данных')
+    exit()
+elif a <= 0 or b <= 0:
+    print('\033[91mОшибка: Стороны треугольника не могут быть отрицательными')
+    exit()
+elif ab <= 0 or ab >= 180:
+    print('\033[91mОшибка: Угол не лежит в области допустимых значиений (0, 180)')
+    exit()
+
+
 ab = radians(ab)
 c = (a ** 2 + b ** 2 - 2 * a * b * cos(ab)) ** 0.5
 bc = asin((a * sin(ab) / c))
 ac = asin((b * sin(bc)) / a)
-# ab, bc, ac = degrees(ab), degrees(bc), degrees(ac)
-ab, bc, ac = map(lambda x: rounder(x), (degrees(ab), degrees(bc), degrees(ac)))
-a, b, c = map(lambda x: rounder(x), (a, b, c))
+ab, bc, ac = degrees(ab), degrees(bc), degrees(ac)
+# ab, bc, ac = map(lambda x: rounder(x), (degrees(ab), degrees(bc), degrees(ac)))
+
 print(a, b, c)
 print(ab, bc, ac)
 sides = (a, b, c)
@@ -42,7 +54,7 @@ for i in sr_sid:
         sn += 1
 
 if sn == 1:
-    print('Треугольник равнобедренный')
+    print('\033[92mТреугольник равнобедренный')
 elif sn == 3:
     print('Треугольник равносторонний')
 for i in angles:
