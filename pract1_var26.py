@@ -1,63 +1,94 @@
+import sys
 from math import cos, degrees, radians, sin, asin
 from itertools import combinations
+from sys import stdin
 
 
-def eq(a, b):
-    if abs(a - b) < 0.000000000001:
+def eq(ea, eb):
+    if abs(ea - eb) < 0.000000000001:
         return True
     else:
         return False
 
 
-def rounder(n: int):
-    if isinstance(n, float):
-        num = str(n).split('.')
-        if num[1] == '0':
-            return int(n)
-        elif num[1].count('9') > 12:
-            return int(num[0]) + 1
-        elif num[1].count('0') > 12:
-            return int(num[0])
-    return n
+def my_is_num(num: str):
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False
 
 
-# a, b, ang1 = map(int, input().split())
-a, b, ab = 3.5, 3.5, '90'
+def main(a, b, ab):
+    ab = radians(ab)
+    c = (a ** 2 + b ** 2 - 2 * a * b * cos(ab)) ** 0.5
+    bc = asin((a * sin(ab) / c))
+    ac = asin((b * sin(bc)) / a)
+    ab, bc, ac = degrees(ab), degrees(bc), degrees(ac)
 
-if isinstance(a, str) or isinstance(b, str) or isinstance(ab, str):
-    print('\x1b[31mОшибка: Введен не числовой тип данных')
-    exit()
-elif a <= 0 or b <= 0:
-    print('\033[91mОшибка: Стороны треугольника не могут быть отрицательными')
-    exit()
-elif ab <= 0 or ab >= 180:
-    print('\033[91mОшибка: Угол не лежит в области допустимых значиений (0, 180)')
-    exit()
+    angles = (ab, bc, ac)
+    sides_comp = list(combinations((a, b, c), 2))
+
+    sn = 0
+    for i in sides_comp:
+        if eq(*i):
+            sn += 1
+    is_find = False
+    if sn == 1:
+        is_find = True
+        print('\x1b[32m[RES]\x1b[0mТреугольник равнобедренный')
+
+    elif sn == 3:
+        is_find = True
+        print('\x1b[32m[RES]\x1b[0mТреугольник равносторонний')
+
+    for i in angles:
+        if eq(90, i):
+            is_find = True
+            print('\x1b[32m[RES]\x1b[0mТреугольник прямоугольный')
+    if not is_find:
+        print('\x1b[32m[RES]\x1b[0mНу, это треугольник')
 
 
-ab = radians(ab)
-c = (a ** 2 + b ** 2 - 2 * a * b * cos(ab)) ** 0.5
-bc = asin((a * sin(ab) / c))
-ac = asin((b * sin(bc)) / a)
-ab, bc, ac = degrees(ab), degrees(bc), degrees(ac)
-# ab, bc, ac = map(lambda x: rounder(x), (degrees(ab), degrees(bc), degrees(ac)))
+is_test_mode = False
+while (test := input('Запустить режим ввода примеров? Y/N\n\x1b[33m[INP]\x1b[0m')) not in 'YN':
+    continue
+if test == 'Y':
+    print('\x1b[32mЗапускаю...\x1b[0m')
+    sys.stdin = open('test_input.txt', 'r')
+    is_test_mode = True
+elif test == 'N':
+    pass
 
-print(a, b, c)
-print(ab, bc, ac)
-sides = (a, b, c)
-angles = (ab, bc, ac)
-sr_sid = list(combinations(sides, 2))
+while 'exit' not in (x := input('Введите входные данные или "exit" для завершения работы программы\n'
+                                '\x1b[33m[INP]\x1b[0m').split(' ')):
 
-sn = 0
-for i in sr_sid:
-    if eq(*i):
-        sn += 1
+    is_nums = True
+    is_val_corr = True
 
-if sn == 1:
-    print('\033[92mТреугольник равнобедренный')
-elif sn == 3:
-    print('Треугольник равносторонний')
-for i in angles:
-    if eq(90, i):
-        print('Треугольник прямоугольный')
-        break
+    if is_test_mode:
+        print(f'\x1b[32m{" ".join(x)}\x1b[0m')
+    if len(x) > 3:
+        print('\x1b[31m[ERR]\x1b[0mВведено больше значений чем требуется')
+        continue
+    for i in x:
+        if not my_is_num(i):
+            print('\x1b[31m[ERR]\x1b[0mВведен не числовой тип данных')
+            is_nums = False
+            break
+    if is_nums is False:
+        continue
+
+    side1, side2, angle = map(lambda z: float(z) if '.' in z else int(z), x)
+    if side1 <= 0 or side2 <= 0:
+        print('\x1b[31m[ERR]\x1b[0mСтороны треугольника не могут быть отрицательными')
+        is_val_corr = False
+    if angle <= 0 or angle >= 180:
+        print('\x1b[31m[ERR]\x1b[0mУгол не лежит в области допустимых значиений (0, 180)')
+        is_val_corr = False
+    if not is_val_corr:
+        continue
+    main(side1, side2, angle)
+if is_test_mode:
+    print('exit')
+print('\x1b[36m[FIN]\x1b[0mПрограмма успешно завершена')
