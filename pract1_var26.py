@@ -1,7 +1,7 @@
 import sys
 from math import cos, degrees, radians, sin, asin
 from itertools import combinations
-from sys import stdin
+
 
 
 def eq(ea, eb):
