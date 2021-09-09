@@ -54,7 +54,7 @@ def main(a, b, ab):
 
 
 is_test_mode = False
-while (test := input('Запустить режим ввода примеров? Y/N\n\x1b[33m[INP]\x1b[0m')) not in 'YN':
+while (test := input('Запустить режим ввода примеров? Y/N\n\x1b[33m[INP]\x1b[0m')) not in 'YNyn':
     continue
 
 if test == 'Y':
@@ -75,8 +75,8 @@ while 'exit' not in (x := input('Введите входные данные ил
 
     is_nums = True
     for i in x:
-        if not my_is_num(i):
-            print('\x1b[31m[ERR]\x1b[0mВведен не числовой тип данных')
+        if not my_is_num(i) or i.startswith('0'):
+            print('\x1b[31m[ERR]\x1b[0mВведен не числовой тип данных, либо значение не корректно')
             is_nums = False
             break
     if is_nums is False:
@@ -85,9 +85,9 @@ while 'exit' not in (x := input('Введите входные данные ил
     is_val_corr = True
     side1, side2, angle = map(lambda z: float(z) if '.' in z else int(z), x)
     if side1 <= 0 or side2 <= 0:
-        print('\x1b[31m[ERR]\x1b[0mСтороны треугольника не могут быть отрицательными')
+        print('\x1b[31m[ERR]\x1b[0mСтороны треугольника не могут быть <= 0')
         is_val_corr = False
-    if angle <= 0 or angle >= 180:
+    if not 0 >= angle >= 180:
         print('\x1b[31m[ERR]\x1b[0mУгол не лежит в области допустимых значиений (0, 180)')
         is_val_corr = False
     if not is_val_corr:
