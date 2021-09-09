@@ -1,3 +1,4 @@
+"""Соколов Лев Макимович КИ21-17/1Б вар26"""
 import sys
 
 from math import cos, degrees, radians, sin, asin
