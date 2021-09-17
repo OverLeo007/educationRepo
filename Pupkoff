@@ -1,7 +1,7 @@
 from math import log2
 
-#n = list(map(float, input('Введите вероятности через пробел\n')))
-n = [0.1, 0.25, 0.15, 0.15, 0.36, 0.05]
+n = list(map(float, input('Введите вероятности через пробел\n')))
+
 print('Энтропия:')
 for i in n:
     print(f'-{i}log2({i})', end='')
@@ -20,4 +20,4 @@ print(f'Hmax = log2({len(n)}) = {round(log2(len(n)), 2)}')
 h = round(log2(len(n)), 2)
 d = ((h - s) / h) * 100
 
-print(f'D = (({h} - {s}) / {h}) * 100% = {round(d)}%')
+print(f'D = (({h} - {s}) / {h}) * 100% = {round(d, 2)}%')
