@@ -16,6 +16,8 @@ for i in n:
     s += x
 print('=', s, sep='')
 print('Избыточность:')
-h = log2(len(n))
+print(f'Hmax = log2({len(n)}) = {round(log2(len(n)), 2)}')
+h = round(log2(len(n)), 2)
 d = ((h - s) / h) * 100
-print(f'{round(d)}%')
+
+print(f'D = (({h} - {s}) / {h}) * 100% = {round(d)}%')
