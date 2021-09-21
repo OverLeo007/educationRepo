@@ -57,12 +57,11 @@ is_test_mode = False
 while (test := input('Запустить режим ввода примеров? Y/N\n\x1b[33m[INP]\x1b[0m')) not in 'YNyn':
     continue
 
-if test == 'Y':
+if test == 'Y' or test == 'y':
     print('\x1b[32mЗапускаю...\x1b[0m')
     sys.stdin = open('test_input.txt', 'r')
     is_test_mode = True
-elif test == 'N':
-    pass
+
 
 while 'exit' not in (x := input('Введите входные данные или "exit" для завершения работы программы\n'
                                 '\x1b[33m[INP]\x1b[0m').split(' ')):
@@ -87,7 +86,7 @@ while 'exit' not in (x := input('Введите входные данные ил
     if side1 <= 0 or side2 <= 0:
         print('\x1b[31m[ERR]\x1b[0mСтороны треугольника не могут быть <= 0')
         is_val_corr = False
-    if not 0 >= angle >= 180:
+    if not 0 < angle < 180:
         print('\x1b[31m[ERR]\x1b[0mУгол не лежит в области допустимых значиений (0, 180)')
         is_val_corr = False
     if not is_val_corr:
