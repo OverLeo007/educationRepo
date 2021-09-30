@@ -92,7 +92,6 @@ menu = {'1': ('Сгерерировать матрицу', matrix.update_matrix)
         '6': ('Вывести текущее состояние матрицы', matrix.get_matrix),
         '7': ('Завершить программу', exit)}
 
-
 while True:
     printable_menu = '\n'.join(map(lambda y: ' - '.join(y), map(lambda x: (x[0], x[1][0]), menu.items())))
     opt = input(f"Выберете опцию:\n{printable_menu}\n")
