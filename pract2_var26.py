@@ -73,7 +73,6 @@ class Matrix:
             zn = input('Введите число:\n')
             if self.my_is_num(zn):
                 zn = float(zn) if '.' in zn else int(zn)
-                print(zn)
                 res = []
                 for rn, row in enumerate(self.matrix):
                     for eln, elem in enumerate(row):
@@ -101,5 +100,3 @@ while True:
         print(menu.get(opt)[-1]())
     except TypeError:
         print('Нет такого варианта выбора')
-
-
