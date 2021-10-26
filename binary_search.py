@@ -17,30 +17,34 @@ def bin_find(arr, el, bds=None):
             return ind + n
 
 
-while (array := input('Введите элементы исходного массива через пробел'
-                      ' или "end" для завершения программы:\n')) != 'end':
-    try:
-        array = list(map(lambda z: float(z) if '.' in z else int(z), array.split(' ')))
-    except ValueError as e:
-        print(f'Ошибка:\n\x1b[31m{e}\x1b[0m')
-        continue
-    try:
-        element = input('Введите искомый элемент:\n')
-        element = float(element) if '.' in element else int(element)
-    except ValueError as e:
-        print(f'Ошибка:\n\x1b[31m{e}\x1b[0m')
-        continue
-    bounds = input('Введите границы поиска (в виде числового отрезка) или нажмите Enter'
-                   ' если вы не хотите задавать границы и вам сложно помочь компьютеру найти элемент\n')
-    if bounds:
+def main():
+    while (array := input('Введите элементы исходного массива через пробел'
+                          ' или "end" для завершения программы:\n')) != 'end':
         try:
-            bounds = tuple(map(int, bounds.split(' ')))
+            array = list(map(lambda z: float(z) if '.' in z else int(z), array.split(' ')))
         except ValueError as e:
             print(f'Ошибка:\n\x1b[31m{e}\x1b[0m')
             continue
-    res = bin_find(array, element, bounds)
-    if res:
-        print(f'Индекс элемента {element} - {res}')
-    else:
-        print('Вы обманули компьютер! В массиве нет этого элемента.')
+        try:
+            element = input('Введите искомый элемент:\n')
+            element = float(element) if '.' in element else int(element)
+        except ValueError as e:
+            print(f'Ошибка:\n\x1b[31m{e}\x1b[0m')
+            continue
+        bounds = input('Введите границы поиска (в виде числового отрезка) или нажмите Enter'
+                       ' если вы не хотите задавать границы и вам сложно помочь компьютеру найти элемент\n')
+        if bounds:
+            try:
+                bounds = tuple(map(int, bounds.split(' ')))
+            except ValueError as e:
+                print(f'Ошибка:\n\x1b[31m{e}\x1b[0m')
+                continue
+        res = bin_find(array, element, bounds)
+        if res:
+            print(f'Индекс элемента {element} - {res}')
+        else:
+            print('Вы обманули компьютер! В массиве нет этого элемента.')
 
+
+if __name__ == '__main__':
+    main()
