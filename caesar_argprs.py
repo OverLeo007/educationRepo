@@ -9,4 +9,4 @@ parser.add_argument('-sh', '--shift', dest='shift', default=0, type=int,
                     help='Сдвиг по алфавиту')
 args = parser.parse_args()
 
-print(f'Индекс элемента: {caesar(args.text, args.shift)}')
+print(f'Результат: {caesar(args.text, args.shift)}')
