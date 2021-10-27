@@ -10,4 +10,7 @@ parser.add_argument('-bds', '--bounds_of_search', dest='bds', nargs=2, default=N
                     help='Границы поиска элемента в массиве')
 args = parser.parse_args()
 
-print(f'Индекс элемента: {bin_find(args.arr, args.elem, args.bds)}')
+if x := bin_find(args.arr, args.elem, args.bds):
+    print(f'Индекс элемента: {x}')
+else:
+    print('Элемент не найден')
