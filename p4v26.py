@@ -1,15 +1,25 @@
+"""Соколов Лев Макимович КИ21-17/1Б вар26"""
+
+
 class Graph:
+    """Класс Графа, реализующий также пункты меню"""
     def __init__(self):
+        """Инициализация экземляра Graph"""
         self.start_n, self.end_n = None, None
         self.node_adj = None
 
     def set_way(self):
-        self.start_n, self.end_n = map(int, input('Введите начальный и конеченый узлы:\n').split(' '))
+        """Функция задания узлов для поиска пути"""
+        self.start_n, self.end_n = \
+            map(int, input('Введите начальный и конеченый узлы:\n').split(' '))
         return 'Узлы успешно заданы'
 
     def set_graph(self):
-        with open(input('Введите имя файла с матрицей:\n')) as mat:
-            wmatrix = list(map(lambda x: list(map(int, x.replace('\n', '').split(' '))), mat.readlines()))
+        """Функция задания нового графа"""
+        with open(input('Введите имя файла с матрицей:\n'), 'r', encoding='utf-8') as mat:
+            wmatrix = list(map(lambda x:
+                               list(map(int, x.replace('\n', '').split(' '))),
+                               mat.readlines()))
         self.node_adj = {}
         for nnum, node in enumerate(wmatrix):
             conns = []
@@ -20,9 +30,11 @@ class Graph:
         return 'Матрца успешно задана'
 
     def get_conn(self, node):
+        """Функция, возвращающая все соединения для текущего узла"""
         return self.node_adj[node]
 
     def findway(self, tree):
+        """Функция, выполняющая поиск пути по дереву оптимальных путей графа"""
         res = [self.end_n]
         cnode = self.end_n
         while cnode != self.start_n:
@@ -32,19 +44,22 @@ class Graph:
         return tuple(res)
 
     def dijkstra(self):
-        print(self.start_n)
+        """Функция, реализующая алгоритма Дейкстры"""
         if self.node_adj is None:
             return 'Матрица еще на задана'
-        elif self.start_n is None:
+        if self.start_n is None:
             return 'Точки еще не заданы'
         seen = set()
         inf = float('inf')
         weights = {i: [inf, 0] for i in self.node_adj.keys()}
-        if self.start_n not in weights.keys() or self.end_n not in weights.keys():
-            return 'Ошибка, начальный или конечный узел не присоединен к графу'
+        if self.start_n not in weights.keys() \
+                or self.end_n not in weights.keys():
+            return 'Ошибка, начальный или конечный ' \
+                   'узел не присоединен к графу'
         weights[self.start_n][0] = 0
         while len(seen) != len(weights):
-            cur_node = min(filter(lambda x: x[0] not in seen, weights.items()), key=lambda x: x[1][0])[0]
+            cur_node = min(filter(lambda x: x[0] not in seen, weights.items()),
+                           key=lambda x: x[1][0])[0]
             cur_weight = weights[cur_node][0]
             cnodes = self.get_conn(cur_node)
             for node, weight in cnodes:
@@ -56,10 +71,9 @@ class Graph:
             seen.add(cur_node)
         tree = {node: data[1] for node, data in weights.items()}
         weights = {node: data[0] for node, data in weights.items()}
-        return f'{weights[self.end_n]} {self.findway(tree)}'
+        return weights[self.end_n], self.findway(tree)
 
 
-# while True:
 graph = Graph()
 menu = {'1': ('Задать имя файла с матрицей', graph.set_graph),
         '2': ('Задать начальные и конечные узлы', graph.set_way),
@@ -67,7 +81,9 @@ menu = {'1': ('Задать имя файла с матрицей', graph.set_gr
         '4': ('Завершить работу программы', exit)}
 
 while True:
-    printable_menu = '\n'.join(map(lambda y: ' - '.join(y), map(lambda x: (x[0], x[1][0]), menu.items())))
+    printable_menu = '\n'.join(map(lambda y: ' - '.join(y),
+                                   map(lambda x: (x[0], x[1][0]),
+                                       menu.items())))
     opt = input(f"Выберете опцию:\n{printable_menu}\n")
     try:
         print(menu.get(opt)[-1]())
@@ -75,7 +91,7 @@ while True:
         print(e)
         print('Нет такого варианта выбора')
     except ValueError:
-        print('Ошибка: матрица задана некорректно\nИЛИ\nНачальный и\\или конечный узел введен(ы) не корректно')
+        print('Ошибка: матрица задана некорректно\nИЛИ\n'
+              'Начальный и\\или конечный узел введен(ы) не корректно')
     except FileNotFoundError:
         print('Ошибка: Файла не существует')
-
